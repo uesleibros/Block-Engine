@@ -19,7 +19,6 @@ class Preloader extends FlxBasePreloader
     }
      
     var logo:Sprite;
-    //boo
      
     override function create():Void 
     {
