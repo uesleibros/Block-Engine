@@ -3,9 +3,9 @@
 Block Engine is a mod for the rhythm game Friday Night Funkin', which aims to improve the game and add new features to it, in addition to making it easier to create your mods.
 # Credits
 ### Friday Night Funkin'
-* ninjamuffin99 (Programmer)
-* KawaiSprite (Musician)
-* Evilsk8r And PhantomArcade3K (Artist)
+* [ninjamuffin99](https://twitter.com/ninja_muffin99) (Programmer)
+* [KawaiSprite](https://twitter.com/kawaisprite) (Musician)
+* [Evilsk8r](https://twitter.com/evilsk8r) And [PhantomArcade3K](https://twitter.com/phantomarcade3k) (Artist)
 ### Block Engine
 * UesleiDev (Programmer and Creator)
 * Gui (Programmer)
