@@ -23,6 +23,15 @@ class MusicBeatSubstate extends FlxSubState
 
     override function update(elapsed:Float)
     {
+        if(FlxG.save.data.volume != null)
+        {
+            FlxG.sound.volume = FlxG.save.data.volume;
+        }
+        if (FlxG.save.data.mute != null)
+        {
+            FlxG.sound.muted = FlxG.save.data.mute;
+        }
+
         FlxG.sound.muteKeys = null;
 		FlxG.sound.volumeUpKeys = null;
 		FlxG.sound.volumeDownKeys = null;

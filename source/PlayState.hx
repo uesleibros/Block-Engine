@@ -826,7 +826,7 @@ class PlayState extends MusicBeatState
 		add(scoreTxt);
 		
 		infoTxt = new FlxText(5, (FlxG.height * 0.9) + 45, 0, "", 11);
-		infoTxt.setFormat("VCR OSD Mono", 11, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		infoTxt.setFormat("VCR OSD Mono", 13, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
 		infoTxt.scrollFactor.set();
 		add(infoTxt);
 
@@ -1330,7 +1330,7 @@ class PlayState extends MusicBeatState
 
 			if (!isStoryMode)
 			{
-				babyArrow.y -= 10;
+				//babyArrow.y -= 10;
 				babyArrow.alpha = 0;
 				FlxTween.tween(babyArrow, {y: babyArrow.y + 10, alpha: 1}, 1, {ease: FlxEase.circOut, startDelay: 0.5 + (0.2 * i)});
 			}
@@ -1491,7 +1491,8 @@ class PlayState extends MusicBeatState
 
 		super.update(elapsed);
 
-		scoreTxt.text = "Score:" + songScore + " | Combo:" + combo + " | Misses:" + misses + " | Accuracy:" + truncateFloat(accuracy, 2) + "% | Rank:" + Ratings.GenerateLetterRank(accuracy);
+		//scoreTxt.text = "Score:" + songScore + " | Combo:" + combo + " | Misses:" + misses + " | Accuracy:" + truncateFloat(accuracy, 2) + "% | Rank:" + Ratings.GenerateLetterRank(accuracy);
+		scoreTxt.text = "Score:" + songScore + " | Misses:" + misses + " | Accuracy:" + truncateFloat(accuracy, 2) + "% | Rank:" + Ratings.GenerateLetterRank(accuracy);
 		infoTxt.text = SONG.song + " (" + storyDifficultyText + ") | Block Engine v1.0";
 
 		if (FlxG.keys.justPressed.ENTER && startedCountdown && canPause)
@@ -1812,18 +1813,20 @@ class PlayState extends MusicBeatState
 							dad.playAnim('singRIGHT' + altAnim, true);
 					}
 
+					dadCamX = xOff[daNote.noteData];
+					dadCamY = yOff[daNote.noteData];
+
 					dad.holdTimer = 0;
 
 					cpuStrums.forEach(function(spr:FlxSprite)
 					{
-						if (Math.abs(note.noteData) == spr.ID)
+						if (Math.abs(daNote.noteData) == spr.ID)
 						{
 							spr.animation.play('confirm', true);
+							spr.centerOffsets();
 						}
 					});
 
-					dadCamX = xOff[daNote.noteData];
-					dadCamY = yOff[daNote.noteData];
 
 					if (SONG.needsVoices)
 						vocals.volume = 1;
@@ -1857,6 +1860,15 @@ class PlayState extends MusicBeatState
 				}
 			});
 		}
+
+		cpuStrums.forEach(function(spr:FlxSprite)
+		{
+			if (spr.animation.finished)
+			{
+				spr.animation.play('static');
+				spr.centerOffsets();
+			}
+		});
 
 		if (!inCutscene)
 			keyShit();

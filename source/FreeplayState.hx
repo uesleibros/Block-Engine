@@ -268,7 +268,7 @@ class FreeplayState extends MusicBeatState
 		remove(weekPlay);
 		
 		remove(hint);
-		hint = new FlxText(FlxG.width * 0.4, (FlxG.height * 0.9) + 36, 0, "Press L to hear the selected song's instrumental.", 16);
+		hint = new FlxText(FlxG.width * 0.6, (FlxG.height * 0.9) + 36, 0, "Press L to hear the selected song's instrumental.", 16);
 		add(hint);
 		
 		weekPlay = new FlxText(diffText.x, diffText.y + 25, 0, "", 24);

@@ -48,37 +48,37 @@ class Ratings
 				switch (i)
 				{
 					case 0:
-						ranking += " AAAAA";
+						ranking += " S++";
 					case 1:
-						ranking += " AAAA";
+						ranking += " S+";
 					case 2:
-						ranking += " AAAA";
+						ranking += " S-";
 					case 3:
-						ranking += " AAAA";
+						ranking += " S";
 					case 4:
-						ranking += " AAA";
+						ranking += " A++";
 					case 5:
-						ranking += " AAA.";
+						ranking += " A+";
 					case 6:
-						ranking += " AAA";
+						ranking += " A-";
 					case 7:
-						ranking += " AA";
+						ranking += " A";
 					case 8:
-						ranking += " AA";
+						ranking += " B++";
 					case 9:
-						ranking += " AA";
+						ranking += " B+";
 					case 10:
-						ranking += " A";
+						ranking += " B-";
 					case 11:
-						ranking += " A";
-					case 12:
-						ranking += " A";
-					case 13:
 						ranking += " B";
+					case 12:
+						ranking += " C++";
+					case 13:
+						ranking += " C+";
 					case 14:
-						ranking += " C";
+						ranking += " C-";
 					case 15:
-						ranking += " D";
+						ranking += " C";
 				}
 				break;
 			}

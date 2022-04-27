@@ -28,11 +28,11 @@ class SoundManager
 
 		if (Amount > 0)
 		{
-			FlxG.sound.play(Paths.sound('Da Sound', 'preload'), 0.6);
+			FlxG.sound.play(Paths.sound('scrollMenu', 'preload'), 1);
 		}
 		else
 		{
-			FlxG.sound.play(Paths.sound('Da Sound', 'preload'), 0.6);
+			FlxG.sound.play(Paths.sound('scrollMenu', 'preload'), 1);
 		}
 
 		FlxG.save.data.volume = FlxG.sound.volume;
