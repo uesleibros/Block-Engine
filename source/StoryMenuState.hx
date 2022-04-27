@@ -101,7 +101,7 @@ class StoryMenuState extends MusicBeatState
 			} else {
 				weekData.push(CoolUtil.coolTextFile('assets/weeks/Week' + indx + '/order.txt'));
 			}
-			indx += 1;
+			indx += 2;
 		}
 		trace(weekData);
 		
