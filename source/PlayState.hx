@@ -1624,7 +1624,7 @@ class PlayState extends MusicBeatState
 						camFollow.y = dad.getMidpoint().y - 430;
 						camFollow.x = dad.getMidpoint().x - 100;
 					default:
-						camFollow.x = dad.getMidpoint().x + 150
+						camFollow.x = dad.getMidpoint().x + 150;
 						camFollow.y = dad.getMidpoint().y - 100;
 				}
 
@@ -1657,7 +1657,7 @@ class PlayState extends MusicBeatState
 						camFollow.x = boyfriend.getMidpoint().x - 200;
 						camFollow.y = boyfriend.getMidpoint().y - 200;
 					default:
-						camFollow.x = dad.getMidpoint().x - 100
+						camFollow.x = dad.getMidpoint().x - 100;
 						camFollow.y = dad.getMidpoint().y - 100;
 				}
 
