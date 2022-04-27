@@ -21,7 +21,7 @@ using StringTools;
 
 class MainMenuState extends MusicBeatState
 {
-	var version = '1.0';
+	public static var version = '1.0';
 	var curSelected:Int = 0;
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
