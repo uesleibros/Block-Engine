@@ -78,6 +78,7 @@ class PlayState extends MusicBeatState
 
 	private var strumLineNotes:FlxTypedGroup<FlxSprite>;
 	private var playerStrums:FlxTypedGroup<FlxSprite>;
+	private var cpuStrums:FlxTypedGroup<FlxSprite> = null;
 
 	private var camZooming:Bool = false;
 	private var curSong:String = "";
@@ -155,6 +156,14 @@ class PlayState extends MusicBeatState
 	var detailsText:String = "";
 	var detailsPausedText:String = "";
 	#end
+
+	var bfCamX:Int = 0;
+	var bfCamY:Int = 0;
+	var dadCamX:Int = 0;
+	var dadCamY:Int = 0;
+
+	var xOff:Array<Int> = [-15, 0, 0, 15];
+	var yOff:Array<Int> = [0, 15, -15, 0];
 
 	override public function create()
 	{
@@ -767,6 +776,7 @@ class PlayState extends MusicBeatState
 		add(grpNoteSplashes);
 
 		playerStrums = new FlxTypedGroup<FlxSprite>();
+		cpuStrums = new FlxTypedGroup<FlxSprite>();
 
 		// startCountdown();
 
@@ -1330,11 +1340,18 @@ class PlayState extends MusicBeatState
 			if (player == 1)
 			{
 				playerStrums.add(babyArrow);
+			}else{
+				cpuStrums.add(babyArrow);
 			}
 
 			babyArrow.animation.play('static');
 			babyArrow.x += 50;
 			babyArrow.x += ((FlxG.width / 2) * player);
+
+			cpuStrums.forEach(function(spr:FlxSprite)
+			{					
+				spr.centerOffsets(); //CPU arrows start out slightly off-center
+			});
 
 			strumLineNotes.add(babyArrow);
 		}
@@ -1606,6 +1623,9 @@ class PlayState extends MusicBeatState
 					case 'senpai-angry':
 						camFollow.y = dad.getMidpoint().y - 430;
 						camFollow.x = dad.getMidpoint().x - 100;
+					default:
+						camFollow.x = dad.getMidpoint().x + 150
+						camFollow.y = dad.getMidpoint().y - 100;
 				}
 
 				if (dad.curCharacter == 'mom')
@@ -1615,6 +1635,9 @@ class PlayState extends MusicBeatState
 				{
 					tweenCamIn();
 				}
+
+				camFollow.x += dadCamX;
+				camFollow.y += dadCamY; //thank you blantados for the code lol
 			}
 
 			if (PlayState.SONG.notes[Std.int(curStep / 16)].mustHitSection && camFollow.x != boyfriend.getMidpoint().x - 100)
@@ -1633,12 +1656,18 @@ class PlayState extends MusicBeatState
 					case 'schoolEvil':
 						camFollow.x = boyfriend.getMidpoint().x - 200;
 						camFollow.y = boyfriend.getMidpoint().y - 200;
+					default:
+						camFollow.x = dad.getMidpoint().x - 100
+						camFollow.y = dad.getMidpoint().y - 100;
 				}
 
 				if (SONG.song.toLowerCase() == 'tutorial')
 				{
 					FlxTween.tween(FlxG.camera, {zoom: 1}, (Conductor.stepCrochet * 4 / 1000), {ease: FlxEase.elasticInOut});
 				}
+
+				camFollow.x += bfCamX;
+				camFollow.y += bfCamY; //thank you blantados for the code lol
 			}
 		}
 
@@ -1784,6 +1813,17 @@ class PlayState extends MusicBeatState
 					}
 
 					dad.holdTimer = 0;
+
+					cpuStrums.forEach(function(spr:FlxSprite)
+					{
+						if (Math.abs(note.noteData) == spr.ID)
+						{
+							spr.animation.play('confirm', true);
+						}
+					});
+
+					dadCamX = xOff[daNote.noteData];
+					dadCamY = yOff[daNote.noteData];
 
 					if (SONG.needsVoices)
 						vocals.volume = 1;
@@ -2395,6 +2435,9 @@ class PlayState extends MusicBeatState
 					spr.animation.play('confirm', true);
 				}
 			});
+
+			bfCamX = xOff[note.noteData];
+			bfCamY = yOff[note.noteData];
 
 			note.wasGoodHit = true;
 			vocals.volume = 1;
