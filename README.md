@@ -31,5 +31,5 @@ Block Engine is a mod for the rhythm game Friday Night Funkin', which aims to im
 ### Block Engine
 * UesleiDev (Programmer and Creator)
 * Gui (Programmer)
-* Morian (Artist)
+* MRmorian (Artist)
 * Contornado (Artist)
