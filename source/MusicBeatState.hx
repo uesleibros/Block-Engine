@@ -37,6 +37,10 @@ class MusicBeatState extends FlxUIState
         {
             FlxG.sound.muted = FlxG.save.data.mute;
         }
+        if(FlxG.save.data.daWarning != null)
+        {
+            FlxG.save.data.daWarning == false;
+        }
 		FlxG.sound.muteKeys = null;
 		FlxG.sound.volumeUpKeys = null;
 		FlxG.sound.volumeDownKeys = null;
