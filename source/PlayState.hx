@@ -1125,6 +1125,12 @@ class PlayState extends MusicBeatState
 		FlxTween.tween(timeBar, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
 		FlxTween.tween(timeTxt, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
 
+		misses = 0;
+		sicks = 0;
+		goods = 0;
+		bads = 0;
+		shits = 0;
+
 		#if desktop
 		// Song duration in a float, useful for the time left feature
 		songLength = FlxG.sound.music.length;
@@ -1615,19 +1621,16 @@ class PlayState extends MusicBeatState
 				camFollow.setPosition(dad.getMidpoint().x + 150, dad.getMidpoint().y - 100);
 				// camFollow.setPosition(lucky.getMidpoint().x - 120, lucky.getMidpoint().y + 210);
 
-				switch (dad.curCharacter)
+				switch (curStage)
 				{
-					case 'mom':
-						camFollow.y = dad.getMidpoint().y;
-					case 'senpai':
-						camFollow.y = dad.getMidpoint().y - 430;
-						camFollow.x = dad.getMidpoint().x - 100;
-					case 'senpai-angry':
+					//case 'mom':
+					//	camFollow.y = dad.getMidpoint().y;
+					case 'school':
 						camFollow.y = dad.getMidpoint().y - 430;
 						camFollow.x = dad.getMidpoint().x - 100;
 					default:
+						camFollow.x = dad.getMidpoint().y - 100;
 						camFollow.x = dad.getMidpoint().x + 150;
-						camFollow.y = dad.getMidpoint().y - 100;
 				}
 
 				if (dad.curCharacter == 'mom')
@@ -1658,6 +1661,9 @@ class PlayState extends MusicBeatState
 					case 'schoolEvil':
 						camFollow.x = boyfriend.getMidpoint().x - 200;
 						camFollow.y = boyfriend.getMidpoint().y - 200;
+					case 'spooky':
+						camFollow.x = dad.getMidpoint().x - 400;
+						camFollow.y = dad.getMidpoint().y - 100;
 					default:
 						camFollow.x = dad.getMidpoint().x - 100;
 						camFollow.y = dad.getMidpoint().y - 100;
@@ -2022,50 +2028,49 @@ class PlayState extends MusicBeatState
 
 		if (noteDiff > Conductor.safeZoneOffset * 0.9)
 		{
+			totalNotesHit -= 0.8;
 			healthTween(-0.023);
 			daRating = 'shit';
 			score = 50;
 			shits++;
 			combo = 0;
 			misses++;
-			totalNotesHit -= 0.8;
 		}
 		else if (noteDiff > Conductor.safeZoneOffset * 0.75)
 		{
+			totalNotesHit -= 0.4;
 			healthTween(-0.01);
 			daRating = 'bad';
 			score = 100;
 			bads++;
-			totalNotesHit -= 0.4;
 		}
 		else if (noteDiff > Conductor.safeZoneOffset * 0.2)
 		{
+			totalNotesHit += 0.75;
 			healthTween(0.015);
 			daRating = 'good';
 			score = 200;
 			goods++;
-			totalNotesHit += 0.75;
 		}
 		
-		else if (noteDiff > Conductor.safeZoneOffset * 0.1)
+		else if (daRating == 'crazy')
 		{
+			totalNotesHit += 1.25;
 			healthTween(0.0475);
-			daRating = 'crazy';
 			sicks++;
 			var recycledNote = grpNoteSplashes.recycle(NoteSplash);
 			recycledNote.setupNoteSplash(daNote.x, daNote.y, daNote.noteData);
 			grpNoteSplashes.add(recycledNote);
-			totalNotesHit += 1.5;
 		}
 		
-		if(daRating == 'sick')
+		else if(noteDiff > Conductor.safeZoneOffset * 0.1)
 		{
+			totalNotesHit += 1;
 			healthTween(0.023);
 			sicks++;
 			var recycledNote = grpNoteSplashes.recycle(NoteSplash);
 			recycledNote.setupNoteSplash(daNote.x, daNote.y, daNote.noteData);
 			grpNoteSplashes.add(recycledNote);
-			totalNotesHit += 1;
 		}
 
 		songScore += score;
@@ -2430,9 +2435,9 @@ class PlayState extends MusicBeatState
 				popUpScore(note, note.strumTime);
 				combo += 1;
 			}
-			else{
+			/*else{
 				totalNotesHit += 1;
-			}
+			}*/
 
 			switch (note.noteData)
 			{

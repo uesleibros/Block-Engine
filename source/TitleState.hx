@@ -294,12 +294,21 @@ class TitleState extends MusicBeatState
 			FlxG.sound.play(Paths.sound('confirmMenu'), 0.7);
 
 			transitioning = true;
+
 			// FlxG.sound.music.stop();
 
-			new FlxTimer().start(2, function(tmr:FlxTimer)
-			{
-				FlxG.switchState(new OutdatedSubState());
-			});
+			if (FlxG.save.data.daWarning){
+				new FlxTimer().start(2, function(tmr:FlxTimer)
+				{
+					FlxG.switchState(new OutdatedSubState());
+				});
+			}else{
+				new FlxTimer().start(2, function(tmr:FlxTimer)
+				{
+					FlxG.switchState(new MainMenuState());
+				});
+			}
+			FlxG.save.flush();
 			// FlxG.sound.play(Paths.music('titleShoot'), 0.7);
 		}
 
