@@ -15,6 +15,7 @@ class Character extends FlxSprite
 	public var debugMode:Bool = false;
 
 	public var iconColor:String;
+	public var iconColor2:String;
 
 	public var isPlayer:Bool = false;
 	public var curCharacter:String = 'bf';
@@ -29,6 +30,7 @@ class Character extends FlxSprite
 		curCharacter = character;
 		this.isPlayer = isPlayer;
 		iconColor = isPlayer ? 'FF66FF33' : 'FFFF0000';
+		iconColor2 = isPlayer ?  'FF000000' : 'FF000000';
 
 		var tex:FlxAtlasFrames;
 		antialiasing = true;

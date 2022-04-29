@@ -101,7 +101,7 @@ class StoryMenuState extends MusicBeatState
 			} else {
 				weekData.push(CoolUtil.coolTextFile('assets/weeks/Week' + indx + '/order.txt'));
 			}
-			indx += 2;
+			indx += 1;
 		}
 		trace(weekData);
 		
@@ -462,20 +462,22 @@ class StoryMenuState extends MusicBeatState
 				// grpWeekCharacters.members[0].updateHitbox();
 		}
 
-		var stringThing:Array<String> = weekData[curWeek];
+        var stringThing:Array<String> = weekData[curWeek];
 
-		for (i in stringThing)
-		{
-			txtTracklist.text += "\n" + i;
-		}
+        for (i in stringThing)
+        {
+            txtTracklist.text += "\n" + i;
+        }
+        
+        txtTracklist.text += "\n";
 
-		txtTracklist.text = txtTracklist.text.toUpperCase();
+        txtTracklist.text = txtTracklist.text.toUpperCase();
 
-		txtTracklist.screenCenter(X);
-		txtTracklist.x -= FlxG.width * 0.35;
+        txtTracklist.screenCenter(X);
+        txtTracklist.x -= FlxG.width * 0.35;
 
-		#if !switch
-		intendedScore = Highscore.getWeekScore(curWeek, curDifficulty);
-		#end
-	}
+        #if !switch
+        intendedScore = Highscore.getWeekScore(curWeek, curDifficulty);
+        #end
+    }
 }
