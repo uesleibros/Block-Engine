@@ -57,6 +57,9 @@ class PlayState extends MusicBeatState
 	public static var storyWeek:Int = 0;
 	public static var storyPlaylist:Array<String> = [];
 	public static var storyDifficulty:Int = 1;
+	public var cardIcon:HealthIcon;
+	public var songCardBg:FlxSprite = new FlxSprite();
+	public var songCard:FlxTypedGroup<FlxSprite>;
 
 	var halloweenLevel:Bool = false;
 
@@ -138,7 +141,6 @@ class PlayState extends MusicBeatState
 	var talking:Bool = true;
 	var songScore:Int = 0;
 	var scoreTxt:FlxText;
-	var infoTxt:FlxText;
 
 	public static var campaignScore:Int = 0;
 
@@ -175,6 +177,9 @@ class PlayState extends MusicBeatState
 		healthTweenObj = FlxTween.tween(this, {}, 0);
 
 		// var gameCam:FlxCamera = FlxG.camera;
+		songCard = new FlxTypedGroup<FlxSprite>();
+		songCard.visible = false;
+		add(songCard);
 		camGame = new FlxCamera();
 		camHUD = new FlxCamera();
 		camHUD.bgColor.alpha = 0;
@@ -649,6 +654,22 @@ class PlayState extends MusicBeatState
 		dad = new Character(100, 100, SONG.player2);
 
 		var camPos:FlxPoint = new FlxPoint(dad.getGraphicMidpoint().x, dad.getGraphicMidpoint().y);
+		
+		songCardBg = new FlxSprite(FlxG.width * 0.7, 50).makeGraphic(Std.int(FlxG.width * 0.47), 135, 0xFF000000);
+		songCardBg.alpha = 0.6;
+		songCardBg.y += 350;
+		songCard.add(songCardBg);
+		
+		cardIcon = new HealthIcon(SONG.player2, false);
+		cardIcon.y = songCardBg.y;
+		cardIcon.x = songCardBg.x;
+		
+		songCard.add(cardIcon);
+		
+		var songCardName:FlxText = new FlxText(songCardBg.x + 15, songCardBg.y + 30, songCardBg.width, "Playing:\n" + SONG.song, 20);
+		songCardName.setFormat("VCR OSD Mono", 20, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		songCardName.antialiasing = true;
+		songCard.add(songCardName);
 
 		switch (SONG.player2)
 		{
@@ -826,11 +847,6 @@ class PlayState extends MusicBeatState
 		scoreTxt.scrollFactor.set();
 		add(scoreTxt);
 		
-		infoTxt = new FlxText(5, (FlxG.height * 0.9) + 45, 0, "", 11);
-		infoTxt.setFormat("VCR OSD Mono", 13, FlxColor.WHITE, FlxTextAlign.LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-		infoTxt.scrollFactor.set();
-		add(infoTxt);
-
 		iconP1 = new HealthIcon(SONG.player1, true);
 		iconP1.y = healthBar.y - (iconP1.height / 2);
 		add(iconP1);
@@ -846,19 +862,14 @@ class PlayState extends MusicBeatState
 		iconP1.cameras = [camHUD];
 		iconP2.cameras = [camHUD];
 		scoreTxt.cameras = [camHUD];
-		grpNoteSplashes.cameras = [camHUD];
-		infoTxt.cameras = [camHUD];
 		timeBar.cameras = [camHUD];
+		grpNoteSplashes.cameras = [camHUD];
 		timeBarBG.cameras = [camHUD];
 		timeTxt.cameras = [camHUD];
 		doof.cameras = [camHUD];
+		songCard.cameras = [camHUD];
+		songCardBg.cameras = [camHUD];
 		
-
-		// if (SONG.song == 'South')
-		// FlxG.camera.alpha = 0.7;
-		// UI_camera.zoom = 1;
-
-		// cameras = [FlxG.cameras.list[1]];
 		startingSong = true;
 
 		if (isStoryMode)
@@ -1123,6 +1134,22 @@ class PlayState extends MusicBeatState
 			FlxG.sound.playMusic(Paths.inst(PlayState.SONG.song), 1, false);
 		FlxG.sound.music.onComplete = endSong;
 		vocals.play();
+		
+		songCard.forEach(function(spr:FlxSprite)
+		{
+			songCard.visible = true;
+			FlxTween.tween(spr, {x: (FlxG.width - spr.width) - 30}, 1.2, {ease: FlxEase.circOut, onComplete:
+				function(twn:FlxTween) {
+				new FlxTimer().start(4.2, function(tmr:FlxTimer)
+				{
+					FlxTween.tween(spr, {x: FlxG.width + spr.width * 2}, 0.8, {ease: FlxEase.circIn, onComplete:
+						function(twn:FlxTween) {
+							remove(songCard);
+						}});
+					});
+				}
+			});
+		});
 		
 		FlxTween.tween(timeBar, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
 		FlxTween.tween(timeTxt, {alpha: 1}, 0.5, {ease: FlxEase.circOut});
@@ -1501,7 +1528,6 @@ class PlayState extends MusicBeatState
 		super.update(elapsed);
 
 		scoreTxt.text = "Score: " + songScore + " | Misses: " + misses + " | Accuracy: " + truncateFloat(accuracy, 2) + "% | Rank: " + Ratings.GenerateLetterRank(accuracy);
-		infoTxt.text = SONG.song + " (" + storyDifficultyText.toUpperCase() + ") | Block Engine " + MainMenuState.version;
 
 		if (FlxG.keys.justPressed.ENTER && startedCountdown && canPause)
 		{
@@ -2059,20 +2085,23 @@ class PlayState extends MusicBeatState
 			goods++;
 		}
 		
-		else if (daRating == 'crazy')
+		else if(noteDiff > Conductor.safeZoneOffset * 0.1)
 		{
-			totalNotesHit += 1.25;
+			totalNotesHit += 1;
+			score = 500;
 			healthTween(0.0475);
 			sicks++;
+			daRating = 'crazy';
 			var recycledNote = grpNoteSplashes.recycle(NoteSplash);
 			recycledNote.setupNoteSplash(daNote.x, daNote.y, daNote.noteData);
 			grpNoteSplashes.add(recycledNote);
 		}
 		
-		else if(noteDiff > Conductor.safeZoneOffset * 0.1)
+		else if (daRating == 'sick')
 		{
-			totalNotesHit += 1;
+			totalNotesHit += 1.25;
 			healthTween(0.023);
+			score = 350;
 			sicks++;
 			var recycledNote = grpNoteSplashes.recycle(NoteSplash);
 			recycledNote.setupNoteSplash(daNote.x, daNote.y, daNote.noteData);
