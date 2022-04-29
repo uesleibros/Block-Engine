@@ -765,7 +765,7 @@ class PlayState extends MusicBeatState
 		timeBar = new FlxBar(timeBarBG.x + 4, timeBarBG.y + 4, LEFT_TO_RIGHT, Std.int(timeBarBG.width - 8), Std.int(timeBarBG.height - 8), this,
 			'songPercent', 0, 1);
 		timeBar.scrollFactor.set();
-		timeBar.createFilledBar(0xFF000000, 0xFFFFFFFF);
+		timeBar.createFilledBar(FlxColor.fromString('#' + dad.iconColor2), FlxColor.fromString('#' + dad.iconColor));
 		timeBar.numDivisions = 800; //How much lag this causes?? Should i tone it down to idk, 400 or 200?
 		add(timeBar);
 		add(timeTxt);
@@ -821,6 +821,7 @@ class PlayState extends MusicBeatState
 		scoreTxt = new FlxText(FlxG.width * 0.7, (FlxG.height * 0.9) + 45, 0, "", 18);
 		scoreTxt.x = healthBarBG.x + healthBarBG.width / 2;
 		scoreTxt.setFormat(Paths.font("vcr.ttf"), 18, FlxColor.WHITE, CENTER, FlxTextBorderStyle.OUTLINE,FlxColor.BLACK);
+		scoreTxt.screenCenter(X);
 		scoreTxt.x -= 340;
 		scoreTxt.scrollFactor.set();
 		add(scoreTxt);
@@ -1098,6 +1099,7 @@ class PlayState extends MusicBeatState
 						}
 					});
 					FlxG.sound.play(Paths.sound('introGo'), 0.6);
+					boyfriend.playAnim('hey');
 				case 4:
 			}
 
@@ -1498,7 +1500,6 @@ class PlayState extends MusicBeatState
 
 		super.update(elapsed);
 
-		//scoreTxt.text = "Score:" + songScore + " | Combo:" + combo + " | Misses:" + misses + " | Accuracy:" + truncateFloat(accuracy, 2) + "% | Rank:" + Ratings.GenerateLetterRank(accuracy);
 		scoreTxt.text = "Score: " + songScore + " | Misses: " + misses + " | Accuracy: " + truncateFloat(accuracy, 2) + "% | Rank: " + Ratings.GenerateLetterRank(accuracy);
 		infoTxt.text = SONG.song + " (" + storyDifficultyText.toUpperCase() + ") | Block Engine " + MainMenuState.version;
 
@@ -1628,9 +1629,14 @@ class PlayState extends MusicBeatState
 					case 'school':
 						camFollow.y = dad.getMidpoint().y - 430;
 						camFollow.x = dad.getMidpoint().x - 100;
+					case 'schoolEvil':
+						camFollow.x = dad.getMidpoint().x + 200;
+					case 'spooky':
+						camFollow.x = dad.getMidpoint().x + 200;
+						camFollow.y = dad.getMidpoint().y - 100;
 					default:
-						camFollow.x = dad.getMidpoint().y - 100;
-						camFollow.x = dad.getMidpoint().x + 150;
+						camFollow.x = dad.getMidpoint().x - 100;
+						camFollow.y = dad.getMidpoint().y - 100;
 				}
 
 				if (dad.curCharacter == 'mom')
@@ -1662,11 +1668,11 @@ class PlayState extends MusicBeatState
 						camFollow.x = boyfriend.getMidpoint().x - 200;
 						camFollow.y = boyfriend.getMidpoint().y - 200;
 					case 'spooky':
-						camFollow.x = dad.getMidpoint().x - 400;
-						camFollow.y = dad.getMidpoint().y - 100;
+						//camFollow.x = boyfriend.getMidpoint().x + 100;
+						camFollow.y = boyfriend.getMidpoint().y - 100;
 					default:
-						camFollow.x = dad.getMidpoint().x - 100;
-						camFollow.y = dad.getMidpoint().y - 100;
+						camFollow.x = boyfriend.getMidpoint().x - 100;
+						camFollow.y = boyfriend.getMidpoint().y - 100;
 				}
 
 				if (SONG.song.toLowerCase() == 'tutorial')
@@ -2010,7 +2016,7 @@ class PlayState extends MusicBeatState
 
 	private function popUpScore(daNote:Note = null, strumtime:Float):Void
 	{
-		var noteDiff:Float = Math.abs(strumtime - Conductor.songPosition);
+		var noteDiff:Float = Math.abs(strumtime - Conductor.songPosition + 8);
 		// boyfriend.playAnim('hey');
 		vocals.volume = 1;
 

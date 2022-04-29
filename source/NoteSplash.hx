@@ -32,4 +32,6 @@ class NoteSplash extends FlxSprite {
         }
         super.update(elapsed);
     }
+
+    // um so i tried porting the notesplash code from psych engine and it didnt work so i guess were using this lol
 }
