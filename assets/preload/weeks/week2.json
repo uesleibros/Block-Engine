@@ -1,0 +1,9 @@
+{
+  "songs": ["Spookeez", "South", "Monster"],
+  "fpchars": ["spooky","spooky","monster"],
+  "weekchars": ["spooky","bf","gf"],
+  "weekFile": "week2",
+  "weekBackground": "halloween",
+  "startUnlocked": true,
+  "weekName": "SPOOKY MONTH"
+}

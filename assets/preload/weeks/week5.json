@@ -1,0 +1,9 @@
+{
+  "songs": ["Cocoa", "Eggnog", "Winter-Horrorland"],
+  "fpchars": ["parents"],
+  "weekchars": ["parents-christmas","bf","gf"],
+  "weekFile": "week5",
+  "weekBackground": "mall",
+  "startUnlocked": true,
+  "weekName": "RED SNOW"
+}

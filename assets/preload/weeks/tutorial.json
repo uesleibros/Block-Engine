@@ -1,0 +1,9 @@
+{
+  "songs": ["tutorial"],
+  "fpchars": ["gf"],
+  "weekchars": ["","bf","gf"],
+  "weekFile": "tutorial",
+  "weekBackground": "stage",
+  "startUnlocked": true,
+  "weekName": "DADDY DEAREST"
+}

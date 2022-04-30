@@ -1,0 +1,9 @@
+{
+  "songs": ["pico", "philly", "blammed"],
+  "fpchars": ["pico","pico","pico"],
+  "weekchars": ["pico","bf","gf"],
+  "weekFile": "week3",
+  "weekBackground": "philly",
+  "startUnlocked": true,
+  "weekName": "Pico"
+}
