@@ -7,12 +7,14 @@ Block Engine is a mod for the rhythm game Friday Night Funkin', which aims to im
 - **Gameplay**
    - Splash Notes
      > Effect when pressing a note and giving Sick, it's from Week 7.
-   - Crazy Rating
+   - New Rating
      > If you hit a note perfectly in the middle, you get (Crazy).
    - Cam Movement
      > The direction you hit the note, the camers will move smoothly.
    - Info Text
      > A text that contains the information of how many misses, scores, combos and among other things you did in the song, in addition to having an Accuracy with ranking.
+   - Music PopUp
+     > On song starts, a Box appears in right side of screen showing a song with playing and opponent icon.
 - **Moddification**
    - Weeks
      > Its more simple to Add a new week.
