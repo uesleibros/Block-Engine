@@ -28,6 +28,7 @@ class WeekShit {
   public static var weekName:Array<String>;
   public static var weekBefore:Array<String>;
   public static function start(){
+    orden = NativeFile.file_contents_string("assets/weeks/weekList.txt");
     ordenSplitted = orden.split('\n');
     for (i in 0...ordenSplitted.length){
       var s:WeekFile = haxe.Json.parse(NativeFile.file_contents_string("assets/weeks/" + ordenSplitted[i]));
