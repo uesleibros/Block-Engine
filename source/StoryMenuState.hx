@@ -30,44 +30,17 @@ class StoryMenuState extends MusicBeatState
 	var weekData:Array<Dynamic> = [];
 	var weekNames = new Array();
 	
-	/*
-	var weekData:Array<Dynamic> = [
-		['Tutorial'],
-		['Bopeebo', 'Fresh', 'Dadbattle'],
-		['Spookeez', 'South', "Monster"],
-		['Pico', 'Philly', "Blammed"],
-		['Satin-Panties', "High", "Milf"],
-		['Cocoa', 'Eggnog', 'Winter-Horrorland'],
-		['Senpai', 'Roses', 'Thorns']
-	];
-	*/
 	
+	var weekData:Array<Dynamic> = []
+  
 	var curDifficulty:Int = 1;
 
-	public static var weekUnlocked:Array<Bool> = [true, true, true, true, true, true, true];
+	public static var weekUnlocked:Array<Bool> = [true];
 
-	var weekCharacters:Array<Dynamic> = [
-		['dad', 'bf', 'gf'],
-		['dad', 'bf', 'gf'],
-		['spooky', 'bf', 'gf'],
-		['pico', 'bf', 'gf'],
-		['mom', 'bf', 'gf'],
-		['parents-christmas', 'bf', 'gf'],
-		['senpai', 'bf', 'gf']
-	];
+	var weekCharacters:Array<Dynamic> = [];
 
-	/*
-	var weekNames:Array<String> = [
-		"Tutorial",
-		"Daddy Dearest",
-		"Spooky Month",
-		"PICO",
-		"MOMMY MUST MURDER",
-		"RED SNOW",
-		"hating simulator ft. moawling"
-	];
-	*/
 	
+	var weekNames:Array<String> = []
 
 	var txtWeekTitle:FlxText;
 
@@ -80,7 +53,7 @@ class StoryMenuState extends MusicBeatState
 	var grpWeekCharacters:FlxTypedGroup<MenuCharacter>;
 
 	var grpLocks:FlxTypedGroup<FlxSprite>;
-
+  var weekFile:Array<String>;
 	var difficultySelectors:FlxGroup;
 	var sprDifficulty:FlxSprite;
 	var leftArrow:FlxSprite;
@@ -90,27 +63,19 @@ class StoryMenuState extends MusicBeatState
 	{
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
-		
-		// GETTING SONG NAMES
-		for (i in FileSystem.readDirectory('assets/weeks'))
-		{
-			if (FileSystem.exists('assets/weeks/Week' + indx + '/order.txt') == false)
-			{
-				if (i != 'weekNames.txt')
-					weekData.push(FileSystem.readDirectory('assets/weeks/' + i));
-			} else {
-				weekData.push(CoolUtil.coolTextFile('assets/weeks/Week' + indx + '/order.txt'));
-			}
-			indx += 1;
-		}
-		trace(weekData);
-		
-		for (i in 0...CoolUtil.coolTextFile('assets/weeks/weekNames.txt').length)
-		{
-			//weekNames.push();
-			weekNames.push(CoolUtil.coolTextFile('assets/weeks/weekNames.txt')[i]);
-		}
-
+      WeekShit.start();
+      
+    
+    weekData = WeekShit.songs;
+    weekCharacters = WeekShit.weekchars;
+    weekFile = WeekShit.weekFile;
+    weekNames = WeekShit.weekName;
+    for (i in 0...WeekShit.startUnlocked) {
+      if (weekUnlocked[i] != null)
+        trace('im not null');
+      else
+        weekUnlocked[i] = WeekShit.startUnlocked[i];
+    }
 		if (FlxG.sound.music != null)
 		{
 			if (!FlxG.sound.music.playing)
@@ -155,7 +120,7 @@ class StoryMenuState extends MusicBeatState
 
 		for (i in 0...weekData.length)
 		{
-			var weekThing:MenuItem = new MenuItem(0, yellowBG.y + yellowBG.height + 10, i);
+			var weekThing:MenuItem = new MenuItem(0, yellowBG.y + yellowBG.height + 10, weekFile[i]);
 			weekThing.y += ((weekThing.height + 20) * i);
 			weekThing.targetY = i;
 			grpWeekText.add(weekThing);
