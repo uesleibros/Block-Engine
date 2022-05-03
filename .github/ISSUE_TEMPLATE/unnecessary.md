@@ -1,6 +1,6 @@
 ---
 name: Unnecessary
-about: Suggestion of something to be femoved
+about: Suggestion of something to be removed
 title: 'Unnecessary: '
 labels: unnecessary
 assignees: ''
