@@ -1,12 +1,12 @@
 ![Block Engine Logo](https://media.discordapp.net/attachments/820142497048166410/969407754013913118/bloco_motor_logo.png)
 # Friday Night Funkin': Block Engine
-Block Engine is a mod for the rhythm game Friday Night Funkin', which aims to improve the game and add new features to it, in addition to making it easier to create your mods.
-
 [![GitHub issues](https://img.shields.io/github/issues/uesleibros/Block-Engine)](https://github.com/uesleibros/Block-Engine/issues)
 [![GitHub pull requests](https://img.shields.io/github/issues-pr/uesleibros/Block-Engine)](https://github.com/uesleibros/Block-Engine/pulls) []() []()
 ![GitHub commits since latest release (by date)](https://img.shields.io/github/commits-since/uesleibros/Block-Engine/latest)
 ![GitHub repo size](https://img.shields.io/github/repo-size/uesleibros/Block-Engine)
 ![Supported platforms](https://img.shields.io/badge/supported%20platforms-windows%2C%20macOS%2C%20linux%2C%20html5-blue)
+
+Block Engine is a mod for the rhythm game Friday Night Funkin', which aims to improve the game and add new features to it, in addition to making it easier to create your mods.
 
 **Alert:** This is just a modification of the original game, not official.
 # Features
