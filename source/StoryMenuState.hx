@@ -11,15 +11,10 @@ import flixel.group.FlxGroup.FlxTypedGroup;
 import flixel.group.FlxGroup;
 import flixel.math.FlxMath;
 import flixel.text.FlxText;
-import lime.utils.Assets;
 import flixel.tweens.FlxTween;
 import flixel.util.FlxColor;
 import flixel.util.FlxTimer;
 import lime.net.curl.CURLCode;
-
-#if sys
-import sys.FileSystem;
-#end
 
 using StringTools;
 
@@ -28,24 +23,29 @@ class StoryMenuState extends MusicBeatState
 	var scoreText:FlxText;
 
 	var weekData:Array<Dynamic> = [];
-	var weekNames = new Array();
-	
-	
-	var weekData:Array<Dynamic> = []
-  
+	/*
+	var weekData:Array<Dynamic> = [
+		['Tutorial'],
+		['Bopeebo', 'Fresh', 'Dadbattle'],
+		['Spookeez', 'South', "Monster"],
+		['Pico', 'Philly', "Blammed"],
+		['Satin-Panties', "High", "Milf"],
+		['Cocoa', 'Eggnog', 'Winter-Horrorland'],
+		['Senpai', 'Roses', 'Thorns']
+	];
+	*/
 	var curDifficulty:Int = 1;
 
-	public static var weekUnlocked:Array<Bool> = [true];
-
-	var weekCharacters:Array<Dynamic> = [];
+	public static var weekUnlocked:Array<Bool> = [];
 
 	
-	var weekNames:Array<String> = []
+	var weekCharacters:Array<Dynamic> = [];
+
+	var weekNames:Array<String> = [];
 
 	var txtWeekTitle:FlxText;
 
 	var curWeek:Int = 0;
-	var indx:Int = 0;
 
 	var txtTracklist:FlxText;
 
@@ -53,7 +53,7 @@ class StoryMenuState extends MusicBeatState
 	var grpWeekCharacters:FlxTypedGroup<MenuCharacter>;
 
 	var grpLocks:FlxTypedGroup<FlxSprite>;
-  var weekFile:Array<String>;
+
 	var difficultySelectors:FlxGroup;
 	var sprDifficulty:FlxSprite;
 	var leftArrow:FlxSprite;
@@ -63,19 +63,7 @@ class StoryMenuState extends MusicBeatState
 	{
 		transIn = FlxTransitionableState.defaultTransIn;
 		transOut = FlxTransitionableState.defaultTransOut;
-      WeekShit.start();
-      
-    
-    weekData = WeekShit.songs;
-    weekCharacters = WeekShit.weekchars;
-    weekFile = WeekShit.weekFile;
-    weekNames = WeekShit.weekName;
-    for (i in 0...WeekShit.startUnlocked) {
-      if (weekUnlocked[i] != null)
-        trace('im not null');
-      else
-        weekUnlocked[i] = WeekShit.startUnlocked[i];
-    }
+
 		if (FlxG.sound.music != null)
 		{
 			if (!FlxG.sound.music.playing)
@@ -117,10 +105,36 @@ class StoryMenuState extends MusicBeatState
 		// Updating Discord Rich Presence
 		DiscordClient.changePresence("In the Menus", null);
 		#end
+		
+		WeekShit.start();
+		
+		trace(WeekShit.songs);
+		trace(WeekShit.weekchars);
+		trace(WeekShit.weekName);
+		for (i in 0...WeekShit.songs.length)
+		{
+			weekData.push(WeekShit.songs[i]);
+		}
+		
+		for (i in 0...WeekShit.weekchars.length)
+		{
+			weekCharacters.push(WeekShit.weekchars[i]);
+		}
+		
+		for (i in 0...WeekShit.weekName.length)
+		{
+			weekNames.push(WeekShit.weekName[i]);
+		}
+		
+		for (i in 0...WeekShit.startUnlocked.length)
+		{
+			weekUnlocked.push(WeekShit.startUnlocked[i]);
+		}
+
 
 		for (i in 0...weekData.length)
 		{
-			var weekThing:MenuItem = new MenuItem(0, yellowBG.y + yellowBG.height + 10, weekFile[i]);
+			var weekThing:MenuItem = new MenuItem(0, yellowBG.y + yellowBG.height + 10, WeekShit.weekFile[i]);
 			weekThing.y += ((weekThing.height + 20) * i);
 			weekThing.targetY = i;
 			grpWeekText.add(weekThing);
@@ -319,7 +333,7 @@ class StoryMenuState extends MusicBeatState
 			}
 
 			PlayState.storyDifficulty = curDifficulty;
-
+			//FlxG.save.data.player1 = WeekShit.;
 			PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + diffic, PlayState.storyPlaylist[0].toLowerCase());
 			PlayState.storyWeek = curWeek;
 			PlayState.campaignScore = 0;
@@ -427,22 +441,22 @@ class StoryMenuState extends MusicBeatState
 				// grpWeekCharacters.members[0].updateHitbox();
 		}
 
-        var stringThing:Array<String> = weekData[curWeek];
+		var stringThing:Array<String> = weekData[curWeek];
 
-        for (i in stringThing)
-        {
-            txtTracklist.text += "\n" + i;
-        }
-        
-        txtTracklist.text += "\n";
+		for (i in stringThing)
+		{
+			txtTracklist.text += "\n" + i;
+		}
+		
+		txtTracklist.text += "\n";
 
-        txtTracklist.text = txtTracklist.text.toUpperCase();
+		txtTracklist.text = txtTracklist.text.toUpperCase();
 
-        txtTracklist.screenCenter(X);
-        txtTracklist.x -= FlxG.width * 0.35;
+		txtTracklist.screenCenter(X);
+		txtTracklist.x -= FlxG.width * 0.35;
 
-        #if !switch
-        intendedScore = Highscore.getWeekScore(curWeek, curDifficulty);
-        #end
-    }
+		#if !switch
+		intendedScore = Highscore.getWeekScore(curWeek, curDifficulty);
+		#end
+	}
 }
