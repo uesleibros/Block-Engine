@@ -17,8 +17,8 @@ typedef WeekFile = {
 
 class WeekShit {
 
-  var orden:String = 'tutorial\nweek 1';
-  var ordenSplitted:Array<String>;
+  public static var orden:String = 'tutorial\nweek 1';
+  public static var ordenSplitted:Array<String>;
   public static var songs:Array<Dynamic>;
   public static var fpchars:Array<Dynamic>;
   public static var weekchars:Array<Dynamic>;
@@ -28,19 +28,20 @@ class WeekShit {
   public static var weekName:Array<String>;
   public static var weekBefore:Array<String>;
   public static function start(){
-    orden = NativeFile.file_contents_string("assets/weeks/weekList.txt");
-    ordenSplitted = orden.split('\n');
+  
+  songs = [];
+  fpchars = [];
+  fpchars = [];
+  weekchars = [];
+  weekFile = [];
+  weekBackground = [];
+  startUnlocked = [];
+  weekName = [];
+  weekBefore = [];
+  
+    ordenSplitted = CoolUtil.coolTextFile("assets/weeks/weekList.txt");
     for (i in 0...ordenSplitted.length){
-      var s:WeekFile = haxe.Json.parse(NativeFile.file_contents_string("assets/weeks/" + ordenSplitted[i]));
-        songs = [];
-        fpchars = [];
-        fpchars = [];
-        weekchars = [];
-        weekFile = [];
-        weekBackground = [];
-        startUnlocked = [];
-        weekName = [];
-        weekBefore = [];
+      var s:WeekFile = haxe.Json.parse(sys.io.File.getContent("assets/weeks/" + ordenSplitted[i] + '.json'));
         songs.push(s.songs);
         fpchars.push(s.fpchars);
         weekchars.push(s.weekchars);
