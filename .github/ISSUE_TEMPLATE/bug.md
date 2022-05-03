@@ -7,13 +7,17 @@ assignees: ''
 
 ---
 
-#### Please check for duplicates, similar issues or closed issues with the same problem, as well performing simple troubleshooting steps (such as deleting the export folder if it's an issue with compiling, reinstalling Block Engine) before submitting an issue.
+#### It is recommended that you check if there is no Issue that has already reported this same Bug. this is extremely important as it saves us time from having to look at the bugs. check issues and closed issues. 
 
-### If you are playing a downloaded version of the game, what operating system are you using?
-Windows (`x86`), Windows (`x86_64`), Linux, or macOS? Specify below.
+### If you are playing the built (executable) version of the game, what operating system are you using?
+> - Windows (`x86` or `x32`) bits
+> - Linux
+> - Mac OS
 
-## What version of the game are you using? Look in the bottom left corner of the main menu.
+### What version of the game are you using? You can see the version in the lower right corner of the main menu.
 
-## Have you identified any steps to reproduce the bug? If so, please describe them below. Use images if possible.
+### Describe below the error caused in detail, use images if possible for better understanding.
 
-## Please describe your issue. Provide extensive detail and images if possible.
+### What were the steps you did to cause this error to be caused?
+
+> It is recommended that you do all the steps and do not ignore any details, as it will be essential for us to understand the error and fix it.
