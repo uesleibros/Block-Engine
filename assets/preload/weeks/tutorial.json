@@ -1,7 +1,7 @@
 {
   "songs": ["tutorial"],
   "fpchars": ["gf"],
-  "weekchars": ["","bf","gf"],
+  "weekchars": ["dad","bf","gf"],
   "weekFile": "week0",
   "weekBackground": "stage",
   "startUnlocked": true,
