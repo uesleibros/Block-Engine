@@ -4,9 +4,10 @@ import flixel.FlxG;
 
 class Ratings
 {
-	public static function GenerateLetterRank(accuracy:Float) // generate a letter ranking
+	public static function GenerateLetterRank(accuracy:Float, forReturn:Bool = false) // generate a letter ranking
 	{
 		var ranking:String = "N/A";
+		var rating:String = "";
 
 		if (PlayState.misses == 0 && PlayState.bads == 0 && PlayState.shits == 0 && PlayState.goods == 0) // Marvelous (SICK) Full Combo
 			ranking = "(MFC)";
@@ -48,37 +49,53 @@ class Ratings
 				switch (i)
 				{
 					case 0:
-						ranking += " S++";
+						ranking += " P";
+						rating = "P";
 					case 1:
-						ranking += " S+";
+						ranking += " X";
+						rating = "X";
 					case 2:
-						ranking += " S-";
+						ranking += " SS+";
+						rating = "SS+";
 					case 3:
-						ranking += " S";
+						ranking += " SS-";
+						rating = "SS-";
 					case 4:
-						ranking += " A++";
+						ranking += " SS";
+						rating = "SS";
 					case 5:
-						ranking += " A+";
+						ranking += " S+";
+						rating = "S+";
 					case 6:
-						ranking += " A-";
+						ranking += " S-";
+						rating = "S-";
 					case 7:
-						ranking += " A";
+						ranking += " S";
+						rating = "S";
 					case 8:
-						ranking += " B++";
+						ranking = " A+";
+						rating = "A+";
 					case 9:
-						ranking += " B+";
+						ranking = " A-";
+						rating = "A-";
 					case 10:
-						ranking += " B-";
+						ranking = " A";
+						rating = "A";
 					case 11:
-						ranking += " B";
+						ranking = " B";
+						rating = "B";
 					case 12:
-						ranking += " C++";
+						ranking = " C";
+						rating = "C";
 					case 13:
-						ranking += " C+";
+						ranking = " D";
+						rating = "D";
 					case 14:
-						ranking += " C-";
+						ranking = " E";
+						rating = "E";
 					case 15:
-						ranking += " C";
+						ranking += " F";
+						rating = "F";
 				}
 				break;
 			}
@@ -87,6 +104,11 @@ class Ratings
 		if (accuracy == 0)
 			ranking = "N/A";
 
-		return ranking;
+		if (forReturn == false){
+			return ranking;
+		} else {
+			return rating;
+		}
+		
 	}
 }

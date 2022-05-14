@@ -39,10 +39,21 @@ class FreeplayState extends MusicBeatState
 
 	override function create()
 	{
-    WeekShit.start();
-    
-    var songs = WeekShit.songs;
-    var chars = WeekShit.fpchars;
+		var initSonglist = CoolUtil.coolTextFile(Paths.txt('freeplaySonglist'));
+		//FlxG.sound.playMusic(Paths.inst(songs[0].songName), 0);
+
+		for (i in 0...initSonglist.length)
+		{
+			songs.push(new SongMetadata(initSonglist[i], 1, 'gf'));
+		}
+
+		/* 
+			if (FlxG.sound.music != null)
+			{
+				if (!FlxG.sound.music.playing)
+					FlxG.sound.playMusic(Paths.music('freakyMenu'));
+			}
+		 */
 
 		#if desktop
 		// Updating Discord Rich Presence
@@ -55,11 +66,27 @@ class FreeplayState extends MusicBeatState
 		isDebug = false;
 		#end
 
-    for (i in 0...songs.length){
-		if (StoryMenuState.weekUnlocked[i] || isDebug)
-			addWeek(songs[i], i, chars[i]);
-    }
+		if (StoryMenuState.weekUnlocked[1])
+			addWeek(['Bopeebo', 'Fresh', 'Dadbattle'], 1, ['dad']);
 
+		if (StoryMenuState.weekUnlocked[2])
+			addWeek(['Spookeez', 'South', 'Monster'], 2, ['spooky']);
+
+		if (StoryMenuState.weekUnlocked[3])
+			addWeek(['Pico', 'Philly', 'Blammed'], 3, ['pico']);
+
+		if (StoryMenuState.weekUnlocked[4])
+			addWeek(['Satin-Panties', 'High', 'Milf'], 4, ['mom']);
+
+		if (StoryMenuState.weekUnlocked[5])
+			addWeek(['Cocoa', 'Eggnog', 'Winter-Horrorland'], 5, ['parents-christmas', 'parents-christmas', 'monster-christmas']);
+
+		if (StoryMenuState.weekUnlocked[6])
+			addWeek(['Senpai', 'Roses', 'Thorns'], 6, ['senpai', 'senpai', 'spirit']);
+
+		// LOAD MUSIC
+
+		// LOAD CHARACTERS
 
 		var bg:FlxSprite = new FlxSprite().loadGraphic(Paths.image('menuBGBlue'));
 		add(bg);
@@ -213,11 +240,11 @@ class FreeplayState extends MusicBeatState
 		switch (curDifficulty)
 		{
 			case 0:
-				diffText.text = "EASY";
+				diffText.text = "< Easy >";
 			case 1:
-				diffText.text = 'NORMAL';
+				diffText.text = '< Normal >';
 			case 2:
-				diffText.text = "HARD";
+				diffText.text = "< Hard >";
 		}
 	}
 

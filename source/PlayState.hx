@@ -110,7 +110,7 @@ class PlayState extends MusicBeatState
 	private var camGame:FlxCamera;
 	
 	public static var misses:Int = 0;
-	private var accuracy:Float = 0.00;
+	public static var accuracy:Float = 0.00;
 	private var totalNotesHit:Float = 0;
 	private var totalPlayed:Int = 0;
 	public static var bads:Int = 0;
@@ -1138,7 +1138,7 @@ class PlayState extends MusicBeatState
 		songCard.forEach(function(spr:FlxSprite)
 		{
 			songCard.visible = true;
-			FlxTween.tween(spr, {x: (FlxG.width - spr.width) - 30}, 1.2, {ease: FlxEase.circOut, onComplete:
+			FlxTween.tween(spr, {x: (FlxG.width - spr.width) - 20}, 1.2, {ease: FlxEase.circOut, onComplete:
 				function(twn:FlxTween) {
 				new FlxTimer().start(4.2, function(tmr:FlxTimer)
 				{
@@ -1253,7 +1253,7 @@ class PlayState extends MusicBeatState
 
 					if (sustainNote.mustPress)
 					{
-						sustainNote.x += FlxG.width / 2; // general offset
+						sustainNote.x += FlxG.width / 1.8; // general offset
 					}
 				}
 
@@ -1261,7 +1261,7 @@ class PlayState extends MusicBeatState
 
 				if (swagNote.mustPress)
 				{
-					swagNote.x += FlxG.width / 2; // general offset
+					swagNote.x += FlxG.width / 1.8; // general offset
 				}
 				else {}
 			}
@@ -1382,7 +1382,7 @@ class PlayState extends MusicBeatState
 
 			babyArrow.animation.play('static');
 			babyArrow.x += 50;
-			babyArrow.x += ((FlxG.width / 2) * player);
+			babyArrow.x += ((FlxG.width / 1.8) * player);
 			
 			cpuStrums.forEach(function(spr:FlxSprite)
 			{					
@@ -1527,7 +1527,7 @@ class PlayState extends MusicBeatState
 
 		super.update(elapsed);
 
-		scoreTxt.text = "Score: " + songScore + " | Misses: " + misses + " | Accuracy: " + truncateFloat(accuracy, 2) + "% | Rank: " + Ratings.GenerateLetterRank(accuracy);
+		scoreTxt.text = "Score: " + songScore + " | Misses: " + misses + " | Accuracy: " + truncateFloat(accuracy, 2) + "% | Rank: " + Ratings.GenerateLetterRank(accuracy, false);
 
 		if (FlxG.keys.justPressed.ENTER && startedCountdown && canPause)
 		{
@@ -1929,6 +1929,15 @@ class PlayState extends MusicBeatState
 	{
 		totalPlayed += 1;
 		accuracy = Math.max(0, totalNotesHit / totalPlayed * 100);
+		if (accuracy >= 100.00)
+		{
+			if (misses == 0)
+				accuracy = 100.00;
+			else
+			{
+				accuracy = 99.98;
+			}
+		}
 		if (accuracy >= 100){
 			accuracy = 100;
 		}
@@ -1940,17 +1949,10 @@ class PlayState extends MusicBeatState
 		canPause = false;
 		FlxG.sound.music.volume = 0;
 		vocals.volume = 0;
-		if (SONG.validScore)
-		{
-			#if !switch
-			Highscore.saveScore(SONG.song, songScore, storyDifficulty);
-			misses = 0;
-			sicks = 0;
-			goods = 0;
-			bads = 0;
-			shits = 0;
-			#end
-		}
+		
+		#if !switch
+		Highscore.saveScore(SONG.song, songScore, storyDifficulty);
+		#end
 
 		timeBarBG.visible = false;
 		timeBar.visible = false;
@@ -1970,12 +1972,11 @@ class PlayState extends MusicBeatState
 
 			if (storyPlaylist.length <= 0)
 			{
-				FlxG.sound.playMusic(Paths.music('freakyMenu'));
 
 				transIn = FlxTransitionableState.defaultTransIn;
 				transOut = FlxTransitionableState.defaultTransOut;
 
-				FlxG.switchState(new StoryMenuState());
+				//FlxG.switchState(new StoryMenuState());
 
 				// if ()
 				StoryMenuState.weekUnlocked[Std.int(Math.min(storyWeek + 1, StoryMenuState.weekUnlocked.length - 1))] = true;
@@ -1988,6 +1989,7 @@ class PlayState extends MusicBeatState
 
 				FlxG.save.data.weekUnlocked = StoryMenuState.weekUnlocked;
 				FlxG.save.flush();
+				openSubState(new ResultSubState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 			}
 			else
 			{
@@ -2016,11 +2018,12 @@ class PlayState extends MusicBeatState
 				FlxTransitionableState.skipNextTransIn = true;
 				FlxTransitionableState.skipNextTransOut = true;
 				prevCamFollow = camFollow;
+				openSubState(new ResultSubState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
 
 				PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + difficulty, PlayState.storyPlaylist[0]);
 				FlxG.sound.music.stop();
 
-				LoadingState.loadAndSwitchState(new PlayState());
+				//LoadingState.loadAndSwitchState(new PlayState());
 			}
 		}
 		else
@@ -2060,17 +2063,18 @@ class PlayState extends MusicBeatState
 
 		if (noteDiff > Conductor.safeZoneOffset * 0.9)
 		{
-			totalNotesHit -= 0.8;
+			totalNotesHit += 0;
 			healthTween(-0.023);
 			daRating = 'shit';
 			score = 50;
 			shits++;
 			combo = 0;
 			misses++;
+			updateAccuracy();
 		}
 		else if (noteDiff > Conductor.safeZoneOffset * 0.75)
 		{
-			totalNotesHit -= 0.4;
+			totalNotesHit += 0.5;
 			healthTween(-0.01);
 			daRating = 'bad';
 			score = 100;
@@ -2087,7 +2091,7 @@ class PlayState extends MusicBeatState
 		
 		else if(noteDiff > Conductor.safeZoneOffset * 0.1)
 		{
-			totalNotesHit += 1;
+			totalNotesHit += 1.25;
 			score = 500;
 			healthTween(0.0475);
 			sicks++;
@@ -2099,7 +2103,7 @@ class PlayState extends MusicBeatState
 		
 		else if (daRating == 'sick')
 		{
-			totalNotesHit += 1.25;
+			totalNotesHit += 1;
 			healthTween(0.023);
 			score = 350;
 			sicks++;
@@ -2109,6 +2113,8 @@ class PlayState extends MusicBeatState
 		}
 
 		songScore += score;
+		updateAccuracy();
+		
 
 		var pixelShitPart1:String = "";
 		var pixelShitPart2:String = '';
@@ -2400,6 +2406,7 @@ class PlayState extends MusicBeatState
 			songScore -= 10;
 			misses++;
 			totalNotesHit -= 1;
+			updateAccuracy();
 
 			FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
 			// FlxG.sound.play(Paths.sound('missnote1'), 1, false);
@@ -2506,8 +2513,6 @@ class PlayState extends MusicBeatState
 				notes.remove(note, true);
 				note.destroy();
 			}
-
-			updateAccuracy();
 		}
 	}
 

@@ -25,12 +25,7 @@ class MainMenuState extends MusicBeatState
 	var curSelected:Int = 0;
 
 	var menuItems:FlxTypedGroup<FlxSprite>;
-
-	#if !switch
-	var optionShit:Array<String> = ['story mode', 'freeplay', 'donate'];
-	#else
-	var optionShit:Array<String> = ['story mode', 'freeplay'];
-	#end
+	var optionShit:Array<String> = ['story_mode', 'freeplay', 'donate', 'credits'];
 
 	var magenta:FlxSprite;
 	var camFollow:FlxObject;
@@ -81,18 +76,27 @@ class MainMenuState extends MusicBeatState
 
 		var tex = Paths.getSparrowAtlas('FNF_main_menu_assets');
 
+		var scale:Float = 1;
+		
 		for (i in 0...optionShit.length)
 		{
-			var menuItem:FlxSprite = new FlxSprite(0, 60 + (i * 160));
-			menuItem.frames = tex;
+			var offset:Float = 108 - (Math.max(optionShit.length, 4) - 4) * 80;
+			var menuItem:FlxSprite = new FlxSprite(0, (i * 140)  + offset);
+			menuItem.scale.x = scale;
+			menuItem.scale.y = scale;
+			menuItem.frames = Paths.getSparrowAtlas('mainmenu/menu_' + optionShit[i]);
 			menuItem.animation.addByPrefix('idle', optionShit[i] + " basic", 24);
 			menuItem.animation.addByPrefix('selected', optionShit[i] + " white", 24);
 			menuItem.animation.play('idle');
 			menuItem.ID = i;
 			menuItem.screenCenter(X);
 			menuItems.add(menuItem);
-			menuItem.scrollFactor.set();
+			var scr:Float = (optionShit.length - 4) * 0.138;
+			if(optionShit.length < 6) scr = 0;
+			menuItem.scrollFactor.set(0, scr);
 			menuItem.antialiasing = true;
+			//menuItem.setGraphicSize(Std.int(menuItem.width * 0.58));
+			menuItem.updateHitbox();
 		}
 
 		FlxG.camera.follow(camFollow, null, 0.06);
@@ -141,10 +145,7 @@ class MainMenuState extends MusicBeatState
 			{
 				if (optionShit[curSelected] == 'donate')
 				{
-					selectedSomethin = true;
-					FlxG.sound.play(Paths.sound('confirmMenu'));
-					
-					FlxG.switchState(new CreditsState());
+					CoolUtil.browserLoad('https://ninja-muffin24.itch.io/funkin');
 				}
 				else
 				{
@@ -173,23 +174,17 @@ class MainMenuState extends MusicBeatState
 
 								switch (daChoice)
 								{
-									case 'story mode':
+									case 'story_mode':
 										FlxG.switchState(new StoryMenuState());
-										trace("Story Menu Selected");
 									case 'freeplay':
 										FlxG.switchState(new FreeplayState());
-
-										trace("Freeplay Menu Selected");
-									case 'options':
-										FlxTransitionableState.skipNextTransIn = true;
-										FlxTransitionableState.skipNextTransOut = true;
-										FlxG.switchState(new OptionsMenu());
+									case 'credits':
+										FlxG.switchState(new CreditsState());
 								}
 							});
 						}
 					});
-				}
-			}
+			}	}
 		}
 
 		super.update(elapsed);

@@ -395,7 +395,7 @@ class TitleState extends MusicBeatState
 				beSpr.visible = true;
 			// credTextShit.visible = true;
 			case 11:
-				createCoolText(["Made by", "UesleiDev\nMRmorian"]);
+				createCoolText(["Made by", "UesleiDev", "MRmorian"]);
 			// credTextShit.text += '\nlmao';
 			case 12:
 				deleteCoolText();

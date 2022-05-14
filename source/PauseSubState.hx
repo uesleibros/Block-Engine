@@ -1,12 +1,11 @@
 package;
 
 import Controls.Control;
+import flixel.group.FlxGroup.FlxTypedGroup;
+import sys.FileSystem;
+import sys.io.File;
 import flixel.FlxG;
 import flixel.FlxSprite;
-import flixel.FlxSubState;
-import flixel.addons.transition.FlxTransitionableState;
-import flixel.group.FlxGroup.FlxTypedGroup;
-import flixel.input.keyboard.FlxKey;
 import flixel.system.FlxSound;
 import flixel.text.FlxText;
 import flixel.tweens.FlxEase;
@@ -17,7 +16,7 @@ class PauseSubState extends MusicBeatSubstate
 {
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
 
-	var menuItems:Array<String> = ['Resume', 'Restart Song', 'Exit to menu'];
+	var menuItems:Array<String> = ['Resume', 'Restart Song', 'Practice Mode', 'Exit to menu'];
 	var curSelected:Int = 0;
 
 	var pauseMusic:FlxSound;
@@ -112,12 +111,31 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.goods = 0;
 					PlayState.bads = 0;
 					PlayState.shits = 0;
+					PlayState.accuracy = 0.00;
+					FlxG.save.data.practice = false;
 				case "Exit to menu":
 					FlxG.switchState(new MainMenuState());
 					PlayState.sicks = 0;
 					PlayState.goods = 0;
 					PlayState.bads = 0;
 					PlayState.shits = 0;
+					PlayState.accuracy = 0.00;
+					FlxG.save.data.practice = false;
+				case "Practice Mode":
+					if (FlxG.save.data.practice == true){
+						FlxG.save.data.practice = false;
+						FlxG.resetState();
+						PlayState.misses = 0;
+						PlayState.sicks = 0;
+						PlayState.goods = 0;
+						PlayState.bads = 0;
+						PlayState.shits = 0;
+						PlayState.accuracy = 0.00;
+					} else {	
+						FlxG.save.data.practice = true;
+						FlxG.sound.play(Paths.sound('confirmMenu'));
+					}
+					FlxG.save.flush();
 			}
 		}
 

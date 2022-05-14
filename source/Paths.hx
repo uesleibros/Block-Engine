@@ -16,7 +16,7 @@ class Paths
 		currentLevel = name.toLowerCase();
 	}
 
-	static function getPath(file:String, type:AssetType, library:Null<String>)
+	static public function getPath(file:String, type:AssetType, library:Null<String>)
 	{
 		if (library != null)
 			return getLibraryPath(file, library);
@@ -40,12 +40,12 @@ class Paths
 		return if (library == "preload" || library == "default") getPreloadPath(file); else getLibraryPathForce(file, library);
 	}
 
-	inline static function getLibraryPathForce(file:String, library:String)
+	inline public static function getLibraryPathForce(file:String, library:String)
 	{
 		return '$library:assets/$library/$file';
 	}
 
-	inline static function getPreloadPath(file:String)
+	inline public static function getPreloadPath(file:String)
 	{
 		return 'assets/$file';
 	}
