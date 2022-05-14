@@ -23,8 +23,10 @@ Block Engine is a mod for the rhythm game Friday Night Funkin', which aims to im
      > The direction you hit the note, the camers will move smoothly.
    - Info Text
      > A text that contains the information of how many misses, scores, combos and among other things you did in the song, in addition to having an Accuracy with ranking.
-   - Music PopUp
+   - Music Pop-Up
      > On song starts, a Box appears in right side of screen showing a song with playing and opponent icon.
+   - Result Screen
+     > On you complete a song, shows for you ranking.
 - **Moddification**
    - Weeks
      > Its more simple to Add a new week.
