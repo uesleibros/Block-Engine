@@ -49,8 +49,10 @@ Block Engine is a mod for the rhythm game Friday Night Funkin', which aims to im
 * [Evilsk8r](https://twitter.com/evilsk8r) And [PhantomArcade3K](https://twitter.com/phantomarcade3k) (Artist)
 ### Block Engine
 * [UesleiDev](https://twitter.com/UesleiDev?t=C6IqOxAWA_oBiyYL1CXpgw&s=09ç) (Programmer and Creator)
-* Gui (Programmer)
-* Nizako (Programmer)
+* Gui and Nizako (Programmer)
 * [MRmorian](https://twitter.com/MRmorian_Alt?s=20&t=5np5g0EAJWMbjlXAUahRHg) (Artist & Code Helper)
 * [Contornado](https://twitter.com/Contornadoo?s=20&t=5np5g0EAJWMbjlXAUahRHg) and [Fefe PPmations](https://twitter.com/Fef_but_birdLoL?s=20&t=5np5g0EAJWMbjlXAUahRHg) (Artist)
 * [Leite](https://twitter.com/LeitenDesnatado?s=20&t=5np5g0EAJWMbjlXAUahRHg) (Idealizer and Logo Artist)
+
+### Special Thanks
+* Verwex - Because of the assets used in the Ranking (Mic'd Up)
