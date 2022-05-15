@@ -39,6 +39,7 @@ Block Engine is a mod for the rhythm game Friday Night Funkin', which aims to im
 - [x] Save Volume on Quit (100%)
 - [x] Week support
 - [ ] Characters support
+- [x] Accuracy Revamped (95%)
 - [x] New Input System (100%)
 - [x] Remading Directories (65%)
 
