@@ -81,11 +81,10 @@ class ResultSubState extends MusicBeatSubstate
 			{	LoadingState.loadAndSwitchState(new PlayState()); }
 			
 			// Freeplay Mode
-			if (PlayState.storyPlaylist.length <= 0 && PlayState.isStoryMode == false)
+			if (PlayState.isStoryMode == false)
 			{	FlxG.sound.playMusic(Paths.music('freakyMenu'));
-				FlxG.switchState(new StoryMenuState());
-			} else if (PlayState.storyPlaylist.length > 0 && PlayState.isStoryMode == false)
-			{	FlxG.switchState(new FreeplayState()); }
+				FlxG.switchState(new FreeplayState());
+			}
 			
 		}
 	}

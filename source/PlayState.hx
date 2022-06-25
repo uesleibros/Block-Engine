@@ -15,6 +15,7 @@ import flixel.FlxSprite;
 import flixel.FlxState;
 import flixel.FlxSubState;
 import flixel.addons.display.FlxGridOverlay;
+import flixel.group.FlxSpriteGroup;
 import flixel.addons.effects.FlxTrail;
 import flixel.addons.effects.FlxTrailArea;
 import flixel.addons.effects.chainable.FlxEffectSprite;
@@ -41,6 +42,7 @@ import lime.utils.Assets;
 import openfl.display.BlendMode;
 import openfl.display.StageQuality;
 import openfl.filters.ShaderFilter;
+import StageData;
 #if sys
 import sys.FileSystem;
 #end
@@ -60,6 +62,13 @@ class PlayState extends MusicBeatState
 	public var cardIcon:HealthIcon;
 	public var songCardBg:FlxSprite = new FlxSprite();
 	public var songCard:FlxTypedGroup<FlxSprite>;
+	
+	public var BF_X:Float = 770;
+	public var BF_Y:Float = 100;
+	public var DAD_X:Float = 100;
+	public var DAD_Y:Float = 100;
+	public var GF_X:Float = 400;
+	public var GF_Y:Float = 130;
 
 	var halloweenLevel:Bool = false;
 
@@ -67,9 +76,12 @@ class PlayState extends MusicBeatState
 
 	private var vocals:FlxSound;
 
-	private var dad:Character;
-	private var gf:Character;
-	private var boyfriend:Boyfriend;
+	public var dad:Character = null;
+	public var gf:Character = null;
+	public var boyfriend:Boyfriend = null;
+	public var boyfriendGroup:FlxSpriteGroup;
+	public var gfGroup:FlxSpriteGroup;
+	public var dadGroup:FlxSpriteGroup;
 
 	private var notes:FlxTypedGroup<Note>;
 	private var unspawnNotes:Array<Note> = [];
@@ -270,6 +282,25 @@ class PlayState extends MusicBeatState
 			detailsText = "Freeplay";
 		}
 
+		var stageData:StageFile = StageData.getStageFile(curStage);
+		if(stageData == null) { //Stage couldn't be found, create a dummy stage for preventing a crash
+			stageData = {
+				directory: "",
+				defaultZoom: 0.9,
+				isPixelStage: false,
+			
+				boyfriend: [770, 100],
+				girlfriend: [400, 130],
+				opponent: [100, 100],
+				hide_girlfriend: false,
+			
+				camera_boyfriend: [0, 0],
+				camera_opponent: [0, 0],
+				camera_girlfriend: [0, 0],
+				camera_speed: 1
+			};
+		}
+
 		// String for when the game is paused
 		detailsPausedText = "Paused - " + detailsText;
 		
@@ -293,7 +324,7 @@ class PlayState extends MusicBeatState
 		{
                         case 'spookeez' | 'monster' | 'south': 
                         {
-                                curStage = 'spooky';
+                              curStage = 'spooky';
 	                          halloweenLevel = true;
 
 		                  var hallowTex = Paths.getSparrowAtlas('halloween_bg');
@@ -447,11 +478,8 @@ class PlayState extends MusicBeatState
 		                  fgSnow.antialiasing = true;
 		                  add(fgSnow);
 
-		                  santa = new FlxSprite(-840, 150);
-		                  santa.frames = Paths.getSparrowAtlas('christmas/santa');
-		                  santa.animation.addByPrefix('idle', 'santa idle in fear', 24, false);
-		                  santa.antialiasing = true;
-		                  add(santa);
+						  santa = new BGSprite('christmas/santa', -840, 150, 1, 1, ['santa idle in fear']);
+						  add(santa);
 		          }
 		          case 'winter-horrorland':
 		          {
@@ -557,81 +585,46 @@ class PlayState extends MusicBeatState
 		                  bg.scrollFactor.set(0.8, 0.9);
 		                  bg.scale.set(6, 6);
 		                  add(bg);
-
-		                  /* 
-		                           var bg:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('weeb/evilSchoolBG'));
-		                           bg.scale.set(6, 6);
-		                           // bg.setGraphicSize(Std.int(bg.width * 6));
-		                           // bg.updateHitbox();
-		                           add(bg);
-
-		                           var fg:FlxSprite = new FlxSprite(posX, posY).loadGraphic(Paths.image('weeb/evilSchoolFG'));
-		                           fg.scale.set(6, 6);
-		                           // fg.setGraphicSize(Std.int(fg.width * 6));
-		                           // fg.updateHitbox();
-		                           add(fg);
-
-		                           wiggleShit.effectType = WiggleEffectType.DREAMY;
-		                           wiggleShit.waveAmplitude = 0.01;
-		                           wiggleShit.waveFrequency = 60;
-		                           wiggleShit.waveSpeed = 0.8;
-		                    */
-
-		                  // bg.shader = wiggleShit.shader;
-		                  // fg.shader = wiggleShit.shader;
-
-		                  /* 
-		                            var waveSprite = new FlxEffectSprite(bg, [waveEffectBG]);
-		                            var waveSpriteFG = new FlxEffectSprite(fg, [waveEffectFG]);
-
-		                            // Using scale since setGraphicSize() doesnt work???
-		                            waveSprite.scale.set(6, 6);
-		                            waveSpriteFG.scale.set(6, 6);
-		                            waveSprite.setPosition(posX, posY);
-		                            waveSpriteFG.setPosition(posX, posY);
-
-		                            waveSprite.scrollFactor.set(0.7, 0.8);
-		                            waveSpriteFG.scrollFactor.set(0.9, 0.8);
-
-		                            // waveSprite.setGraphicSize(Std.int(waveSprite.width * 6));
-		                            // waveSprite.updateHitbox();
-		                            // waveSpriteFG.setGraphicSize(Std.int(fg.width * 6));
-		                            // waveSpriteFG.updateHitbox();
-
-		                            add(waveSprite);
-		                            add(waveSpriteFG);
-		                    */
 		          }
 		          default:
 		          {
-		                  defaultCamZoom = 0.9;
-		                  curStage = 'stage';
-		                  var bg:FlxSprite = new FlxSprite(-600, -200).loadGraphic(Paths.image('stageback'));
-		                  bg.antialiasing = true;
-		                  bg.scrollFactor.set(0.9, 0.9);
-		                  bg.active = false;
-		                  add(bg);
+					var bg:BGSprite = new BGSprite('stageback', -600, -200, 0.9, 0.9);
+					add(bg);
 
-		                  var stageFront:FlxSprite = new FlxSprite(-650, 600).loadGraphic(Paths.image('stagefront'));
-		                  stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
-		                  stageFront.updateHitbox();
-		                  stageFront.antialiasing = true;
-		                  stageFront.scrollFactor.set(0.9, 0.9);
-		                  stageFront.active = false;
-		                  add(stageFront);
+					var stageFront:BGSprite = new BGSprite('stagefront', -650, 600, 0.9, 0.9);
+					stageFront.setGraphicSize(Std.int(stageFront.width * 1.1));
+					stageFront.updateHitbox();
+					add(stageFront);
+					var stageLight:BGSprite = new BGSprite('stage_light', -125, -100, 0.9, 0.9);
+					stageLight.setGraphicSize(Std.int(stageLight.width * 1.1));
+					stageLight.updateHitbox();
+					add(stageLight);
+					var stageLight:BGSprite = new BGSprite('stage_light', 1225, -100, 0.9, 0.9);
+					stageLight.setGraphicSize(Std.int(stageLight.width * 1.1));
+					stageLight.updateHitbox();
+					stageLight.flipX = true;
+					add(stageLight);
 
-		                  var stageCurtains:FlxSprite = new FlxSprite(-500, -300).loadGraphic(Paths.image('stagecurtains'));
-		                  stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
-		                  stageCurtains.updateHitbox();
-		                  stageCurtains.antialiasing = true;
-		                  stageCurtains.scrollFactor.set(1.3, 1.3);
-		                  stageCurtains.active = false;
-
-		                  add(stageCurtains);
+					var stageCurtains:BGSprite = new BGSprite('stagecurtains', -500, -300, 1.3, 1.3);
+					stageCurtains.setGraphicSize(Std.int(stageCurtains.width * 0.9));
+					stageCurtains.updateHitbox();
+					add(stageCurtains);
 		          }
               }
 
 		var gfVersion:String = 'gf';
+		
+		defaultCamZoom = stageData.defaultZoom;
+		BF_X = stageData.boyfriend[0];
+		BF_Y = stageData.boyfriend[1];
+		GF_X = stageData.girlfriend[0];
+		GF_Y = stageData.girlfriend[1];
+		DAD_X = stageData.opponent[0];
+		DAD_Y = stageData.opponent[1];
+		
+		boyfriendGroup = new FlxSpriteGroup(BF_X, BF_Y);
+		dadGroup = new FlxSpriteGroup(DAD_X, DAD_Y);
+		gfGroup = new FlxSpriteGroup(GF_X, GF_Y);
 
 		switch (curStage)
 		{
@@ -648,10 +641,15 @@ class PlayState extends MusicBeatState
 		if (curStage == 'limo')
 			gfVersion = 'gf-car';
 
-		gf = new Character(400, 130, gfVersion);
+		gf = new Character(0, 0, gfVersion);
+		startCharacterPos(gf);
 		gf.scrollFactor.set(0.95, 0.95);
+		gfGroup.add(gf);
 
-		dad = new Character(100, 100, SONG.player2);
+		dad = new Character(0, 0, SONG.player2);
+		startCharacterPos(dad, true);
+		dadGroup.add(dad);
+		//startCharacterPos(dad, true);
 
 		var camPos:FlxPoint = new FlxPoint(dad.getGraphicMidpoint().x, dad.getGraphicMidpoint().y);
 		
@@ -709,9 +707,52 @@ class PlayState extends MusicBeatState
 				camPos.set(dad.getGraphicMidpoint().x + 300, dad.getGraphicMidpoint().y);
 		}
 
-		boyfriend = new Boyfriend(770, 450, SONG.player1);
+		boyfriend = new Boyfriend(0, 0, SONG.player1);
+		startCharacterPos(boyfriend);
+		boyfriendGroup.add(boyfriend);
 
 		// REPOSITIONING PER STAGE
+		
+		switch (SONG.song.toLowerCase())
+		{
+			case 'spookeez' | 'south' | 'monster':
+				curStage = 'spooky';
+			case 'pico' | 'blammed' | 'philly' | 'philly-nice':
+				curStage = 'philly';
+			case 'milf' | 'satin-panties' | 'high':
+				curStage = 'limo';
+			case 'cocoa' | 'eggnog':
+				curStage = 'mall';
+			case 'winter-horrorland':
+				curStage = 'mallEvil';
+			case 'senpai' | 'roses':
+				curStage = 'school';
+			case 'thorns':
+				curStage = 'schoolEvil';
+			case 'ugh' | 'guns' | 'stress':
+					curStage = 'tank';
+			default:
+				curStage = 'stage';
+		}
+		var stageData:StageFile = StageData.getStageFile(curStage);
+		if(stageData == null) { //Stage couldn't be found, create a dummy stage for preventing a crash
+			stageData = {
+				directory: "",
+				defaultZoom: 0.9,
+				isPixelStage: false,
+			
+				boyfriend: [770, 100],
+				girlfriend: [400, 130],
+				opponent: [100, 100],
+				hide_girlfriend: false,
+			
+				camera_boyfriend: [0, 0],
+				camera_opponent: [0, 0],
+				camera_girlfriend: [0, 0],
+				camera_speed: 1
+			};
+		}
+		
 		switch (curStage)
 		{
 			case 'limo':
@@ -746,15 +787,11 @@ class PlayState extends MusicBeatState
 				gf.x += 180;
 				gf.y += 300;
 		}
-
-		add(gf);
+		
 
 		// Shitty layering but whatev it works LOL
 		if (curStage == 'limo')
 			add(limo);
-
-		add(dad);
-		add(boyfriend);
 
 		var doof:DialogueBox = new DialogueBox(false, dialogue);
 		// doof.x += 70;
@@ -802,6 +839,10 @@ class PlayState extends MusicBeatState
 		// startCountdown();
 
 		generateSong(SONG.song);
+		
+		add(gfGroup);
+		add(boyfriendGroup);
+		add(dadGroup);
 
 		// add(strumLine);
 
@@ -847,11 +888,11 @@ class PlayState extends MusicBeatState
 		scoreTxt.scrollFactor.set();
 		add(scoreTxt);
 		
-		iconP1 = new HealthIcon(SONG.player1, true);
+		iconP1 = new HealthIcon(boyfriend.healthIcon, true);
 		iconP1.y = healthBar.y - (iconP1.height / 2);
 		add(iconP1);
 
-		iconP2 = new HealthIcon(SONG.player2, false);
+		iconP2 = new HealthIcon(dad.healthIcon, false);
 		iconP2.y = healthBar.y - (iconP2.height / 2);
 		add(iconP2);
 
@@ -1117,6 +1158,16 @@ class PlayState extends MusicBeatState
 			swagCounter += 1;
 			// generateSong('fresh');
 		}, 5);
+	}
+	
+	function startCharacterPos(char:Character, ?gfCheck:Bool = false) {
+		if(gfCheck && char.curCharacter.startsWith('gf')) { //IF DAD IS GIRLFRIEND, HE GOES TO HER POSITION
+			char.setPosition(GF_X, GF_Y);
+			char.scrollFactor.set(0.95, 0.95);
+			char.danceEveryNumBeats = 2;
+		}
+		char.x += char.positionArray[0];
+		char.y += char.positionArray[1];
 	}
 
 	var previousFrameTime:Int = 0;
@@ -1654,14 +1705,14 @@ class PlayState extends MusicBeatState
 					//	camFollow.y = dad.getMidpoint().y;
 					case 'school':
 						camFollow.y = dad.getMidpoint().y - 430;
-						camFollow.x = dad.getMidpoint().x - 100;
+						camFollow.x = dad.getMidpoint().x - 85;
 					case 'schoolEvil':
 						camFollow.x = dad.getMidpoint().x + 200;
 					case 'spooky':
-						camFollow.x = dad.getMidpoint().x + 200;
+						camFollow.x = dad.getMidpoint().x + 187;
 						camFollow.y = dad.getMidpoint().y - 100;
 					default:
-						camFollow.x = dad.getMidpoint().x - 100;
+						camFollow.x = dad.getMidpoint().x - 85;
 						camFollow.y = dad.getMidpoint().y - 100;
 				}
 
@@ -2028,8 +2079,8 @@ class PlayState extends MusicBeatState
 		}
 		else
 		{
-			trace('WENT BACK TO FREEPLAY??');
-			FlxG.switchState(new FreeplayState());
+			openSubState(new ResultSubState(boyfriend.getScreenPosition().x, boyfriend.getScreenPosition().y));
+			//FlxG.switchState(new FreeplayState());
 		}
 	}
 

@@ -40,12 +40,10 @@ class FreeplayState extends MusicBeatState
 	override function create()
 	{
 		var initSonglist = CoolUtil.coolTextFile(Paths.txt('freeplaySonglist'));
+		var weekUnlocked:Array<Bool> = [];
+		var weekSongs:Array<Dynamic> = [];
+		var weekChars:Array<Dynamic> = [];
 		//FlxG.sound.playMusic(Paths.inst(songs[0].songName), 0);
-
-		for (i in 0...initSonglist.length)
-		{
-			songs.push(new SongMetadata(initSonglist[i], 1, 'gf'));
-		}
 
 		/* 
 			if (FlxG.sound.music != null)
@@ -65,7 +63,31 @@ class FreeplayState extends MusicBeatState
 		#if debug
 		isDebug = false;
 		#end
-
+		
+		WeekShit.start();
+		
+		for (i in 0...WeekShit.songs.length)
+		{
+			weekSongs.push(WeekShit.songs[i]);
+		}
+		for (i in 0...WeekShit.startUnlocked.length)
+		{
+			weekUnlocked.push(WeekShit.startUnlocked[i]);
+		}
+		for (i in 0...WeekShit.fpchars.length)
+		{
+			weekChars.push(WeekShit.fpchars[i]);
+		}
+		
+		for (i in 0...weekSongs.length)
+		{
+			if (weekUnlocked[i] == true)
+			{
+				addWeek(weekSongs[i], i, weekChars[i]);
+			}
+		}
+		
+		/*
 		if (StoryMenuState.weekUnlocked[1])
 			addWeek(['Bopeebo', 'Fresh', 'Dadbattle'], 1, ['dad']);
 
@@ -83,6 +105,7 @@ class FreeplayState extends MusicBeatState
 
 		if (StoryMenuState.weekUnlocked[6])
 			addWeek(['Senpai', 'Roses', 'Thorns'], 6, ['senpai', 'senpai', 'spirit']);
+		*/
 
 		// LOAD MUSIC
 
