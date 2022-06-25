@@ -1,6 +1,6 @@
 {
   "songs": ["Cocoa", "Eggnog", "Winter-Horrorland"],
-  "fpchars": ["parents"],
+  "fpchars": ["parents-christmas", "parents-christmas", "monster"],
   "weekchars": ["parents-christmas","bf","gf"],
   "weekFile": "week5",
   "weekBackground": "mall",
