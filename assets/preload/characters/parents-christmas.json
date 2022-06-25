@@ -250,13 +250,9 @@
 		-500,
 		0
 	],
-	"healthicon": "parents",
+	"healthicon": "parents-christmas",
 	"flip_x": false,
-	"healthbar_colors": [
-		196,
-		94,
-		174
-	],
+	"iconColor": "FF0000",
 	"camera_position": [
 		0,
 		0

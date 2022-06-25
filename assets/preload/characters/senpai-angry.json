@@ -62,13 +62,9 @@
 		150,
 		360
 	],
-	"healthicon": "senpai-pixel",
+	"healthicon": "senpai",
 	"flip_x": false,
-	"healthbar_colors": [
-		255,
-		170,
-		111
-	],
+	"iconColor": "FFFFAA6F",
 	"camera_position": [
 		-240,
 		-330
